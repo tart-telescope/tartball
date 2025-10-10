@@ -3,7 +3,8 @@ name = "tartball"
 version = "0.1.0"
 description = "Prediction code to simulate TART data"
 authors = [
-    {name = "copilot-swe-agent[bot]",email = "198982749+Copilot@users.noreply.github.com"}
+    {name = "Tim Molteno",email = "tim@elec.ac.nz"},
+    {name = "Ben Hugo",email = "ben@sarao.ac.za"}
 ]
 license = {text = "GPL-3.0"}
 readme = "README.md"
