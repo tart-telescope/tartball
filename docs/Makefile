@@ -1,2 +1,2 @@
 test:
-	stimela run example_recipe.yml
+	stimela run example_recipe.yml tart=mu-udm
