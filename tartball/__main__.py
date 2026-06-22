@@ -1,4 +1,5 @@
 """CLI entry point for tartball."""
+# Copyright (c) 2025-2026 Timothy C.A. Molteno
 
 import argparse
 import logging

@@ -1,4 +1,5 @@
 """Measurement set creation from predicted visibilities."""
+# Copyright (c) 2025-2026 Timothy C.A. Molteno
 
 import json
 import logging

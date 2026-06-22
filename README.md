@@ -1,3 +1,4 @@
+<!-- Copyright (c) 2025-2026 Timothy C.A. Molteno -->
 # tartball
 
 Prediction code to simulate TART radio telescope data.

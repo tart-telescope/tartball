@@ -1,3 +1,4 @@
+<!-- Copyright (c) 2025-2026 Timothy C.A. Molteno -->
 ## Example Usage
 
 Tartball is intended to be used using stimela, and installed using the tart_cargo (https://github.com/tart-telescope/tart_cargo) curated set of TART stimela cabs.

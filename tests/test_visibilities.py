@@ -1,4 +1,5 @@
 """Tests for the DiSkO visibility computation."""
+# Copyright (c) 2025-2026 Timothy C.A. Molteno
 
 import numpy as np
 from disko.healpix_sphere import HealpixFoV

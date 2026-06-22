@@ -1,3 +1,4 @@
+<!-- Copyright (c) 2025-2026 Timothy C.A. Molteno -->
 # Changelog
 
 ## 0.2.0 — 2026-06-22

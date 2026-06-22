@@ -1,3 +1,4 @@
+# Copyright (c) 2025-2026 Timothy C.A. Molteno
 # Use Python 3.12 as base image
 FROM python:3.12-slim
 

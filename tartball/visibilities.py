@@ -1,4 +1,5 @@
 """DiSkO telescope operator for forward-predicting visibilities."""
+# Copyright (c) 2025-2026 Timothy C.A. Molteno
 
 import logging
 
