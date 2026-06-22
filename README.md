@@ -41,7 +41,7 @@ tartball --model model.json --ms output.ms
 
 ### Telescope configuration
 
-The telescope info and antenna positions can be provided in two ways:
+**One of the following is required** — the CLI will error if neither is given.
 
 **Online** — fetch from a TART API:
 
@@ -56,9 +56,6 @@ tartball --model model.json \
          --info info.json \
          --antenna-positions antenna_positions.json
 ```
-
-If neither `--api` nor `--info`/`--antenna-positions` are given, the
-production TART API is used by default.
 
 ### Calibration gains
 

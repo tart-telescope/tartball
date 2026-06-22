@@ -3,6 +3,11 @@
 
 ## 0.2.0 — 2026-06-22
 
+- Telescope configuration (`--api` or `--info`/`--antenna-positions`) is now
+  **required** — the CLI errors if neither is provided instead of silently
+  defaulting to the production API.
+- Added copyright notice (`Timothy C.A. Molteno 2025-2026`) to all source files.
+
 ### Build System
 
 - Migrated from Poetry to **uv** (`pyproject.toml` now uses `hatchling` build backend)

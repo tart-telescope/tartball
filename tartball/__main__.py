@@ -85,15 +85,15 @@ def main():
         parser.print_help()
         sys.exit(1)
 
-    # Default --api if nothing else provided
-    api_url = args.api
-    if api_url is None and args.info is None and args.antenna_positions is None:
-        api_url = "https://api.elec.ac.nz/tart/mu-udm/"
+    if args.api is None and (args.info is None or args.antenna_positions is None):
+        parser.error(
+            "Either --api or both --info and --antenna-positions must be provided."
+        )
 
     model_to_ms(
         model_path=args.model,
         ms_name=args.ms,
-        api_url=api_url,
+        api_url=args.api,
         info_path=args.info,
         ant_pos_path=args.antenna_positions,
         gains_path=args.gains,
