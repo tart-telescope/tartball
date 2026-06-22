@@ -7,8 +7,11 @@ WORKDIR /app
 # Copy project files
 COPY . /app
 
+# Install uv
+RUN pip install --no-cache-dir uv
+
 # Install the tartball module
-RUN pip install --no-cache-dir --trusted-host pypi.org --trusted-host files.pythonhosted.org .
+RUN uv pip install --system --no-cache .
 
 # Set metadata labels
 LABEL org.opencontainers.image.source="https://github.com/tart-telescope/tartball"

@@ -11,7 +11,10 @@ readme = "README.md"
 requires-python = ">=3.12,<4.0"
 dependencies = [
     "astropy (>=7.1.0,<8.0.0)",
+    "disko (>=1.3.3,<2.0.0)",
+    "healpy (>=1.15.0,<2.0.0)",
     "numba (==0.61)",
+    "tart2ms (>=0.8.1,<0.9.0)",
 ]
 
 
@@ -19,5 +22,5 @@ dependencies = [
 tartball = "tartball.__main__:main"
 
 [build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
