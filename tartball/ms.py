@@ -28,6 +28,7 @@ def model_to_ms(
     info_path=None,
     ant_pos_path=None,
     gains_path=None,
+    noise_amplitude=0.0,
     fov_str="180deg",
     res_str="2deg",
     nside=None,
@@ -101,6 +102,16 @@ def model_to_ms(
 
     # --- Compute predicted visibilities ---
     vis_pred, _ = compute_visibilities(ant_pos, frequency, sky_pixels, sphere)
+
+    # --- Add Gaussian noise if requested ---
+    if noise_amplitude > 0.0:
+        rng = np.random.default_rng()
+        noise = noise_amplitude * (
+            rng.standard_normal(len(vis_pred))
+            + 1j * rng.standard_normal(len(vis_pred))
+        ).astype(np.complex64)
+        vis_pred = vis_pred + noise
+        logger.info("Added Gaussian noise (amplitude=%.2e)", noise_amplitude)
 
     # --- Build synthetic observation for MS creation ---
     dummy_sources = [{"name": "TARTBALL_MODEL", "az": 0.0, "el": 90.0}]

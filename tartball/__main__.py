@@ -68,6 +68,12 @@ def main():
         help="Overwrite output MS if it exists",
     )
     parser.add_argument(
+        "--noise",
+        type=float,
+        default=0.0,
+        help="Standard deviation of additive complex Gaussian noise (default 0)",
+    )
+    parser.add_argument(
         "--debug",
         action="store_true",
         help="Enable debug logging",
@@ -97,6 +103,7 @@ def main():
         info_path=args.info,
         ant_pos_path=args.antenna_positions,
         gains_path=args.gains,
+        noise_amplitude=args.noise,
         fov_str=args.fov,
         res_str=args.res,
         nside=args.nside,
