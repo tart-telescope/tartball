@@ -74,6 +74,11 @@ def main():
         help="Standard deviation of additive complex Gaussian noise (default 0)",
     )
     parser.add_argument(
+        "--beam",
+        default=None,
+        help="Path to beam JSON file (el/az/gain records) for antenna beam pattern",
+    )
+    parser.add_argument(
         "--debug",
         action="store_true",
         help="Enable debug logging",
@@ -104,6 +109,7 @@ def main():
         ant_pos_path=args.antenna_positions,
         gains_path=args.gains,
         noise_amplitude=args.noise,
+        beam_path=args.beam,
         fov_str=args.fov,
         res_str=args.res,
         nside=args.nside,

@@ -36,6 +36,8 @@ tartball --model model.json --ms output.ms
 | `--fov` | `180deg` | Field of view (e.g. `10deg`, `30arcmin`) |
 | `--res` | `2deg` | Healpix resolution (e.g. `1deg`, `2arcmin`) |
 | `--nside` | *auto* | Explicit healpix nside (overrides fov/res) |
+| `--noise` | `0.0` | Additive complex Gaussian noise amplitude |
+| `--beam` | *none* | Path to beam JSON file (el/az/gain records) |
 | `--clobber` / `-c` | off | Overwrite existing output MS |
 | `--debug` | off | Enable debug logging |
 
@@ -67,6 +69,31 @@ tartball --model model.json --gains gains.json
 
 The gains file should be a JSON object with `gain` and `phase_offset` arrays
 (one entry per antenna).
+
+### Antenna beam pattern
+
+Apply a wide-angle antenna beam to the sky model. The beam file is a JSON
+array of `{el, az, gain}` records in degrees (see
+[tart-beam](https://github.com/tart-telescope/beams) for details):
+
+```bash
+tartball --model model.json --beam beam.json
+```
+
+```json
+[
+  {"el": 90.0, "az": 0.0, "gain": 1.0},
+  {"el": 45.0, "az": 30.0, "gain": 0.5}
+]
+```
+
+### Additive noise
+
+Inject complex Gaussian noise into the visibilities for realistic simulation:
+
+```bash
+tartball --model model.json --noise 1e-4
+```
 
 ## Sky model format
 

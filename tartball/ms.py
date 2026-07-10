@@ -29,6 +29,7 @@ def model_to_ms(
     ant_pos_path=None,
     gains_path=None,
     noise_amplitude=0.0,
+    beam_path=None,
     fov_str="180deg",
     res_str="2deg",
     nside=None,
@@ -99,6 +100,10 @@ def model_to_ms(
 
     # --- Project model sources onto healpix ---
     sky_pixels = project_model_to_sphere(sources, sphere)
+
+    # --- Apply antenna beam pattern if provided ---
+    if beam_path:
+        sky_pixels = _apply_beam(sky_pixels, sphere, beam_path)
 
     # --- Compute predicted visibilities ---
     vis_pred, _ = compute_visibilities(ant_pos, frequency, sky_pixels, sphere)
@@ -194,6 +199,51 @@ def _load_gains(gains_path, n_ant):
         "gain": [1.0] * n_ant,
         "phase_offset": [0.0] * n_ant,
     }
+
+
+# ---------------------------------------------------------------------------
+# Antenna beam pattern
+# ---------------------------------------------------------------------------
+
+
+def _apply_beam(sky_pixels, sphere, beam_path):
+    """Apply an antenna beam pattern to the healpix sky pixels.
+
+    Loads a beam from an el/az/gain JSON file and multiplies each
+    healpix pixel by the beam response at that sky direction.
+    """
+    from tart_beam import Beam, elaz_to_vec
+
+    # Load and fit a zenith-pointing beam from the el/az/gain records
+    logger.info("Loading beam from: %s", beam_path)
+    with open(beam_path) as f:
+        import json
+        records = json.load(f)
+
+    el = np.array([r["el"] for r in records], dtype=float)
+    az = np.array([r["az"] for r in records], dtype=float)
+    gain = np.array([r["gain"] for r in records], dtype=float)
+    s_hat = elaz_to_vec(el, az)
+
+    beam = Beam.fit(s_hat, gain, degree=8, q=2, name="user_beam")
+    logger.info("Fitted beam: %s", beam)
+
+    # Evaluate beam at each healpix pixel direction
+    el_rad = sphere.el_r
+    az_rad = sphere.az_r
+    pixel_vecs = elaz_to_vec(np.degrees(el_rad), np.degrees(az_rad))
+    response = beam.evaluate(pixel_vecs)
+
+    # Multiply sky pixels by beam response
+    result = sky_pixels * response
+
+    n_active = np.count_nonzero(result)
+    logger.info(
+        "Applied beam: %d non-zero pixels (was %d)",
+        n_active,
+        np.count_nonzero(sky_pixels),
+    )
+    return result
 
 
 # ---------------------------------------------------------------------------

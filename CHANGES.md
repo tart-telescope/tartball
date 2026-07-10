@@ -1,6 +1,20 @@
 <!-- Copyright (c) 2025-2026 Timothy C.A. Molteno -->
 # Changelog
 
+## 0.3.0 — 2026-07-10
+
+### Dependencies
+
+- Added `tart-beam (>=0.1.0,<1.0.0)` for wide-angle antenna beam patterns
+
+### Features
+
+- **`--noise` flag**: additive complex Gaussian noise to visibilities
+  (`vis = vis + amplitude * (N(0,1) + 1j * N(0,1))`), default 0
+- **`--beam` flag**: antenna beam pattern from an el/az/gain JSON file,
+  applied as a multiplicative factor on healpix sky pixels before
+  computing visibilities
+
 ## 0.2.0 — 2026-06-22
 
 - Telescope configuration (`--api` or `--info`/`--antenna-positions`) is now
