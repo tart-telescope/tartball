@@ -3,15 +3,14 @@ name = "tartball"
 version = "0.3.0"
 description = "Prediction code to simulate TART data"
 authors = [
-    {name = "Tim Molteno",email = "tim@elec.ac.nz"},
-    {name = "Ben Hugo",email = "ben@sarao.ac.za"}
+    {name = "Tim Molteno",email = "tim@elec.ac.nz"}
 ]
 license = {text = "GPL-3.0"}
 readme = "README.md"
 requires-python = ">=3.12,<4.0"
 dependencies = [
     "astropy (>=7.1.0,<8.0.0)",
-    "disko (>=1.3.3,<2.0.0)",
+    "disko (>=1.4.1,<2.0.0)",
     "healpy (>=1.15.0,<2.0.0)",
     "numba (==0.61)",
     "tart-beam (>=0.1.0,<1.0.0)",

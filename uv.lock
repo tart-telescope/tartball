@@ -410,16 +410,17 @@ wheels = [
 
 [[package]]
 name = "disko"
-version = "1.3.3"
+version = "1.4.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "dask-ms" },
+    { name = "gmsh" },
     { name = "h5py" },
     { name = "healpy" },
     { name = "imageio" },
     { name = "matplotlib" },
+    { name = "meshio" },
     { name = "numpy" },
-    { name = "pygmsh" },
     { name = "pylops" },
     { name = "scikit-learn" },
     { name = "scipy" },
@@ -428,9 +429,9 @@ dependencies = [
     { name = "tart-tools" },
     { name = "toolz" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/54/00/43ecba3b9ad081e17cc77fda0b932d419d85a3bbd8b3154bab6aa0b52c9b/disko-1.3.3.tar.gz", hash = "sha256:7b7e5dd193c310cc3a8002ae0df798f81978c3c04adb3bbd02ba00593931df64", size = 150964, upload-time = "2026-06-19T11:47:14.756Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/fb/5e/8987a16faf339719ec503385f4b316ff74e8a65382169740d9a97965e2ad/disko-1.4.1.tar.gz", hash = "sha256:2c0a5cff2b6162500922b1abb638f23323b83b8a4b8fb33e32db11162837de4e", size = 151501, upload-time = "2026-06-23T10:14:55.425Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/3f/56/8f91ef3989ccb32474fa2021f15ca5ddd2853a09180ded96042d4bc9645f/disko-1.3.3-py3-none-any.whl", hash = "sha256:69172340dd9cdd9e652ea9cf78f980af5cc7c03cf3a4650512ed217a65975b83", size = 81581, upload-time = "2026-06-19T11:47:13.815Z" },
+    { url = "https://files.pythonhosted.org/packages/30/0c/85e7a668ff12dc089fbbc5de09e30e942fd845478e8599eeeea123fd7fcb/disko-1.4.1-py3-none-any.whl", hash = "sha256:992a2ae254940ddd1c56f429c7c43742d6ac8e4591371494d48d9e06eba9e4ae", size = 82705, upload-time = "2026-06-23T10:14:54.469Z" },
 ]
 
 [[package]]
@@ -1131,20 +1132,6 @@ wheels = [
 ]
 
 [[package]]
-name = "pygmsh"
-version = "7.1.17"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "gmsh" },
-    { name = "meshio" },
-    { name = "numpy" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/b8/13/3604dcd79e73e5d76d8f06fe80506b7ab8087597191440437bbf70699ab6/pygmsh-7.1.17.tar.gz", hash = "sha256:563724abff4f8517598d3354b9c795feddbe0675786145bfeaf20cbee6691c1d", size = 61707, upload-time = "2022-01-28T13:15:43.628Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/6e/67/9d4ac4b0d683aaa4170da59a1980740b281fd38fc253e1830fde4dac3d4f/pygmsh-7.1.17-py3-none-any.whl", hash = "sha256:3b3da976a4da5070eaf1b0d2c5eec3fc4902524580c6d256c32a390f720e86d4", size = 45435, upload-time = "2022-01-28T13:15:39.376Z" },
-]
-
-[[package]]
 name = "pylops"
 version = "2.7.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1466,7 +1453,7 @@ wheels = [
 
 [[package]]
 name = "tartball"
-version = "0.2.0"
+version = "0.3.0"
 source = { editable = "." }
 dependencies = [
     { name = "astropy" },
@@ -1485,7 +1472,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "astropy", specifier = ">=7.1.0,<8.0.0" },
-    { name = "disko", specifier = ">=1.3.3,<2.0.0" },
+    { name = "disko", specifier = ">=1.4.1,<2.0.0" },
     { name = "healpy", specifier = ">=1.15.0,<2.0.0" },
     { name = "numba", specifier = "==0.61" },
     { name = "tart-beam", specifier = ">=0.1.0,<1.0.0" },
