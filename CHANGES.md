@@ -1,6 +1,12 @@
 <!-- Copyright (c) 2025-2026 Timothy C.A. Molteno -->
 # Changelog
 
+## 0.3.1 — 2026-07-10
+
+- `--beam` now accepts `"tart"` or `"default"` to use the built-in
+  :func:`tart_beam.base_tart_beam` pattern (uniform above 10° elevation).
+- Updated `disko` dependency to latest (>=1.4.1).
+
 ## 0.3.0 — 2026-07-10
 
 ### Dependencies

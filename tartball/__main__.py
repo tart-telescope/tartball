@@ -76,7 +76,7 @@ def main():
     parser.add_argument(
         "--beam",
         default=None,
-        help="Path to beam JSON file (el/az/gain records) for antenna beam pattern",
+        help="Path to beam JSON file, or 'tart' for the built-in TART beam pattern",
     )
     parser.add_argument(
         "--debug",

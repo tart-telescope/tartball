@@ -209,24 +209,28 @@ def _load_gains(gains_path, n_ant):
 def _apply_beam(sky_pixels, sphere, beam_path):
     """Apply an antenna beam pattern to the healpix sky pixels.
 
-    Loads a beam from an el/az/gain JSON file and multiplies each
-    healpix pixel by the beam response at that sky direction.
+    If ``beam_path`` is a file path to an el/az/gain JSON file, the beam
+    is fitted from those samples.  If it is the string ``"tart"`` or
+    ``"default"``, the built-in :func:`tart_beam.base_tart_beam` is used.
     """
-    from tart_beam import Beam, elaz_to_vec
+    from tart_beam import Beam, base_tart_beam, elaz_to_vec
 
-    # Load and fit a zenith-pointing beam from the el/az/gain records
-    logger.info("Loading beam from: %s", beam_path)
-    with open(beam_path) as f:
-        import json
-        records = json.load(f)
+    if beam_path in ("tart", "default"):
+        logger.info("Using built-in TART base beam")
+        beam = base_tart_beam(degree=8, q=1, name="TART_base")
+    else:
+        logger.info("Loading beam from: %s", beam_path)
+        with open(beam_path) as f:
+            import json
+            records = json.load(f)
 
-    el = np.array([r["el"] for r in records], dtype=float)
-    az = np.array([r["az"] for r in records], dtype=float)
-    gain = np.array([r["gain"] for r in records], dtype=float)
-    s_hat = elaz_to_vec(el, az)
+        el = np.array([r["el"] for r in records], dtype=float)
+        az = np.array([r["az"] for r in records], dtype=float)
+        gain = np.array([r["gain"] for r in records], dtype=float)
+        s_hat = elaz_to_vec(el, az)
+        beam = Beam.fit(s_hat, gain, degree=8, q=2, name="user_beam")
 
-    beam = Beam.fit(s_hat, gain, degree=8, q=2, name="user_beam")
-    logger.info("Fitted beam: %s", beam)
+    logger.info("Beam: %s", beam)
 
     # Evaluate beam at each healpix pixel direction
     el_rad = sphere.el_r

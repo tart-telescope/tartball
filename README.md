@@ -72,9 +72,18 @@ The gains file should be a JSON object with `gain` and `phase_offset` arrays
 
 ### Antenna beam pattern
 
-Apply a wide-angle antenna beam to the sky model. The beam file is a JSON
-array of `{el, az, gain}` records in degrees (see
-[tart-beam](https://github.com/tart-telescope/beams) for details):
+Apply a wide-angle antenna beam to the sky model.  Either use the built-in
+TART base beam or provide a custom JSON file of ``{el, az, gain}`` records
+in degrees (see [tart-beam](https://github.com/tart-telescope/beams)).
+
+**Built-in TART beam** (uniform above 10° elevation, tapering to zero at
+the horizon):
+
+```bash
+tartball --model model.json --beam tart
+```
+
+**Custom beam from file:**
 
 ```bash
 tartball --model model.json --beam beam.json
