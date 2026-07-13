@@ -1,6 +1,10 @@
 <!-- Copyright (c) 2025-2026 Timothy C.A. Molteno -->
 # Changelog
 
+## 0.3.3 — 2026-07-10
+
+- Multi-arch Docker images (amd64 + arm64) via native self-hosted ARM runner.
+
 ## 0.3.2 — 2026-07-10
 
 - Removed unused `numba` dependency (leftover from initial scaffold).

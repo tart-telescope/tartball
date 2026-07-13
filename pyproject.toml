@@ -1,6 +1,6 @@
 [project]
 name = "tartball"
-version = "0.3.2"
+version = "0.3.3"
 description = "Prediction code to simulate TART data"
 authors = [
     {name = "Tim Molteno",email = "tim@elec.ac.nz"}
