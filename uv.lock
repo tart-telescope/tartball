@@ -1453,13 +1453,12 @@ wheels = [
 
 [[package]]
 name = "tartball"
-version = "0.3.0"
+version = "0.3.1"
 source = { editable = "." }
 dependencies = [
     { name = "astropy" },
     { name = "disko" },
     { name = "healpy" },
-    { name = "numba" },
     { name = "tart-beam" },
     { name = "tart2ms" },
 ]
@@ -1474,7 +1473,6 @@ requires-dist = [
     { name = "astropy", specifier = ">=7.1.0,<8.0.0" },
     { name = "disko", specifier = ">=1.4.1,<2.0.0" },
     { name = "healpy", specifier = ">=1.15.0,<2.0.0" },
-    { name = "numba", specifier = "==0.61" },
     { name = "tart-beam", specifier = ">=0.1.0,<1.0.0" },
     { name = "tart2ms", specifier = ">=0.8.1,<0.9.0" },
 ]

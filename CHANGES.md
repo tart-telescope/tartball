@@ -1,6 +1,11 @@
 <!-- Copyright (c) 2025-2026 Timothy C.A. Molteno -->
 # Changelog
 
+## 0.3.2 — 2026-07-10
+
+- Removed unused `numba` dependency (leftover from initial scaffold).
+- Updated `tart_cargo` cab definition to match current CLI.
+
 ## 0.3.1 — 2026-07-10
 
 - `--beam` now accepts `"tart"` or `"default"` to use the built-in

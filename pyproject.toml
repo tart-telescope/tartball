@@ -1,6 +1,6 @@
 [project]
 name = "tartball"
-version = "0.3.1"
+version = "0.3.2"
 description = "Prediction code to simulate TART data"
 authors = [
     {name = "Tim Molteno",email = "tim@elec.ac.nz"}
@@ -12,7 +12,6 @@ dependencies = [
     "astropy (>=7.1.0,<8.0.0)",
     "disko (>=1.4.1,<2.0.0)",
     "healpy (>=1.15.0,<2.0.0)",
-    "numba (==0.61)",
     "tart-beam (>=0.1.0,<1.0.0)",
     "tart2ms (>=0.8.1,<0.9.0)",
 ]
