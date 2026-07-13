@@ -20,7 +20,7 @@ jobs:
         platform:
           - runner: ubuntu-latest
             arch: amd64
-          - runner: ubuntu-24.04-arm
+          - runner: [self-hosted, linux, arm64]
             arch: arm64
     runs-on: ${{ matrix.platform.runner }}
     permissions:
