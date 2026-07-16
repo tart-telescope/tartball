@@ -72,18 +72,27 @@ The gains file should be a JSON object with `gain` and `phase_offset` arrays
 
 ### Antenna beam pattern
 
-Apply a wide-angle antenna beam to the sky model.  Either use the built-in
-TART base beam or provide a custom JSON file of ``{el, az, gain}`` records
-in degrees (see [tart-beam](https://github.com/tart-telescope/beams)).
+Apply a wide-angle antenna beam to the sky model.  The beam is evaluated at
+each healpix pixel and multiplied into the sky before computing visibilities.
 
-**Built-in TART beam** (uniform above 10° elevation, tapering to zero at
-the horizon):
+Two modes are supported:
+
+**Built-in TART beam** (`--beam tart` or `--beam default`):
+
+Uses [`base_tart_beam()`](https://github.com/tart-telescope/beams) from the
+`tart-beam` package — uniform above 10° elevation, with a smooth cosine
+taper to zero at the horizon.  The beam is modelled as a degree-8 spherical
+harmonic series with a ``w**q`` horizon factor (q=1).
 
 ```bash
 tartball --model model.json --beam tart
 ```
 
-**Custom beam from file:**
+**Custom beam from file** (`--beam path/to/beam.json`):
+
+Loads an array of `{el, az, gain}` records (degrees), fits a spherical-harmonic
+`Beam`, and applies it.  The beam is assumed zenith-pointing; use
+`beam.set_pointing()` programmatically to re-point.
 
 ```bash
 tartball --model model.json --beam beam.json
@@ -92,9 +101,15 @@ tartball --model model.json --beam beam.json
 ```json
 [
   {"el": 90.0, "az": 0.0, "gain": 1.0},
-  {"el": 45.0, "az": 30.0, "gain": 0.5}
+  {"el": 45.0, "az": 30.0, "gain": 0.5},
+  {"el": 10.0, "az": 0.0, "gain": 0.1},
+  {"el": 0.0,  "az": 0.0, "gain": 0.0}
 ]
 ```
+
+For best results provide samples with good azimuthal coverage and at least
+one sample at the horizon (`el=0, gain=0`) and at boresight (`el=90, gain=1`).
+If no beam is specified, the sky is unmodified (ideal isotropic antennas).
 
 ### Additive noise
 

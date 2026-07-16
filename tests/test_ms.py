@@ -7,7 +7,7 @@ from pathlib import Path
 
 import numpy as np
 
-from tartball.ms import _load_gains, _load_telescope_from_files, _synthesize_vis_json
+from tartball.ms import _apply_beam, _load_gains, _load_telescope_from_files, _synthesize_vis_json
 
 # ---------------------------------------------------------------------------
 # _load_telescope_from_files
@@ -106,6 +106,104 @@ class TestSynthesizeVisJson:
             (3, 1),
             (3, 2),
         ]
+
+
+# ---------------------------------------------------------------------------
+# _apply_beam
+# ---------------------------------------------------------------------------
+
+
+class TestApplyBeam:
+    def test_tart_alias_uses_builtin_beam(self):
+        """--beam tart loads base_tart_beam, not a file."""
+        from disko.healpix_sphere import HealpixFoV
+
+        sphere = HealpixFoV(nside=8)
+        sky = np.ones(sphere.npix)
+        result = _apply_beam(sky, sphere, "tart")
+
+        assert result is not None
+        assert result.shape == sky.shape
+        # Beam should leave zenith pixel ~1 and zero out behind-the-antenna pixels
+        assert np.all(result >= 0.0)
+        # Fitted spherical harmonics can overshoot slightly at band edges
+        assert np.all(result <= 1.05)
+
+    def test_default_alias_is_same_as_tart(self):
+        """--beam default is an alias for tart."""
+        from disko.healpix_sphere import HealpixFoV
+
+        sphere = HealpixFoV(nside=8)
+        sky = np.ones(sphere.npix)
+        result_tart = _apply_beam(sky.copy(), sphere, "tart")
+        result_default = _apply_beam(sky.copy(), sphere, "default")
+
+        np.testing.assert_array_equal(result_tart, result_default)
+
+    def test_horizon_tapered_to_zero(self):
+        """Pixels at/below the horizon (el <= 0) should have zero response."""
+        from disko.healpix_sphere import HealpixFoV
+
+        sphere = HealpixFoV(nside=32)
+        sky = np.ones(sphere.npix)
+        result = _apply_beam(sky, sphere, "tart")
+
+        # Pixels with elevation <= 0 should be zero
+        horizon_mask = sphere.el_r <= 0.0
+        if np.any(horizon_mask):
+            assert np.all(result[horizon_mask] == 0.0)
+
+    def test_zenith_near_unity(self):
+        """The pixel nearest the zenith (el ~ 90 deg) should have gain ~ 1."""
+        from disko.healpix_sphere import HealpixFoV
+
+        sphere = HealpixFoV(nside=8)
+        sky = np.ones(sphere.npix)
+        result = _apply_beam(sky, sphere, "tart")
+
+        # Find the pixel closest to zenith
+        zenith_idx = np.argmax(sphere.el_r)
+        assert result[zenith_idx] > 0.9, f"zenith gain too low: {result[zenith_idx]}"
+
+    def test_reduces_pixel_values(self):
+        """The beam should reduce average pixel amplitude."""
+        from disko.healpix_sphere import HealpixFoV
+
+        sphere = HealpixFoV(nside=8)
+        sky = np.ones(sphere.npix)
+        result = _apply_beam(sky, sphere, "tart")
+
+        # Mean response should be less than 1 (most of sphere is below zenith)
+        assert np.mean(result) < 0.8
+
+    def test_file_path_still_works(self):
+        """A JSON file path should still load a custom beam."""
+        from disko.healpix_sphere import HealpixFoV
+
+        # Create a beam file with decent azimuthal coverage for a stable fit
+        records = []
+        for el in [90.0, 60.0, 30.0, 10.0, 0.0]:
+            for az in [0.0, 90.0, 180.0, 270.0]:
+                if el >= 10:
+                    gain = 1.0
+                elif el == 0:
+                    gain = 0.0
+                else:
+                    gain = el / 10.0
+                records.append({"el": el, "az": az, "gain": gain})
+        path = _write_json(records)
+        try:
+            sphere = HealpixFoV(nside=8)
+            sky = np.ones(sphere.npix)
+            result = _apply_beam(sky, sphere, str(path))
+
+            assert result is not None
+            assert result.shape == sky.shape
+            # The spherical-harmonic fit may ring near sharp edges;
+            # just verify the beam was applied (some pixels changed)
+            assert not np.allclose(result, sky)
+        finally:
+            path.unlink()
 
 
 # ---------------------------------------------------------------------------
