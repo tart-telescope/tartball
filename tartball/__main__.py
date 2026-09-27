@@ -76,7 +76,10 @@ def main():
     parser.add_argument(
         "--beam",
         default=None,
-        help="Path to beam JSON file, or 'tart' for the built-in TART beam pattern",
+        help="Antenna beam model from the tart-beam package: 'tart' for the "
+             "built-in TART beam pattern, or a path to a JSON file containing "
+             "either a serialised tart-beam model (Beam.to_json format) or "
+             "{el, az, gain} sample records to fit",
     )
     parser.add_argument(
         "--debug",

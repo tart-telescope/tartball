@@ -205,6 +205,31 @@ class TestApplyBeam:
         finally:
             path.unlink()
 
+    def test_tartbeam_model_json_is_loaded(self):
+        """A serialised tart-beam model (Beam.to_json format) is incorporated."""
+        from disko.healpix_sphere import HealpixFoV
+        from tart_beam import base_tart_beam, elaz_to_vec
+
+        beam = base_tart_beam(degree=4, q=1, name="test_model")
+        tmp = tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False)
+        tmp.close()
+        path = Path(tmp.name)
+        try:
+            beam.to_json(str(path))
+            sphere = HealpixFoV(nside=8)
+            sky = np.ones(sphere.npix)
+            result = _apply_beam(sky, sphere, str(path))
+
+            assert result.shape == sky.shape
+            # The applied response must match the loaded beam model exactly
+            pixel_vecs = elaz_to_vec(
+                np.degrees(sphere.el_r), np.degrees(sphere.az_r)
+            )
+            expected = sky * beam.evaluate(pixel_vecs)
+            np.testing.assert_allclose(result, expected)
+        finally:
+            path.unlink()
+
 
 # ---------------------------------------------------------------------------
 # helpers

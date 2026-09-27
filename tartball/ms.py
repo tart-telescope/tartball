@@ -209,11 +209,17 @@ def _load_gains(gains_path, n_ant):
 def _apply_beam(sky_pixels, sphere, beam_path):
     """Apply an antenna beam pattern to the healpix sky pixels.
 
-    If ``beam_path`` is a file path to an el/az/gain JSON file, the beam
-    is fitted from those samples.  If it is the string ``"tart"`` or
-    ``"default"``, the built-in :func:`tart_beam.base_tart_beam` is used.
+    Beam models are sourced from the ``tart-beam`` package
+    (https://github.com/tart-telescope/beams):
+
+    * ``"tart"`` or ``"default"`` uses the built-in
+      :func:`tart_beam.base_tart_beam` pattern.
+    * A JSON file containing a serialised beam model (the format written by
+      ``tart_beam.Beam.to_json()``) is loaded with :meth:`Beam.from_json`.
+    * A JSON file containing ``{el, az, gain}`` sample records is fitted with
+      :func:`tart_beam.fit_from_json`.
     """
-    from tart_beam import Beam, base_tart_beam, elaz_to_vec
+    from tart_beam import Beam, base_tart_beam, elaz_to_vec, fit_from_json
 
     if beam_path in ("tart", "default"):
         logger.info("Using built-in TART base beam")
@@ -221,14 +227,15 @@ def _apply_beam(sky_pixels, sphere, beam_path):
     else:
         logger.info("Loading beam from: %s", beam_path)
         with open(beam_path) as f:
-            import json
-            records = json.load(f)
+            payload = json.load(f)
 
-        el = np.array([r["el"] for r in records], dtype=float)
-        az = np.array([r["az"] for r in records], dtype=float)
-        gain = np.array([r["gain"] for r in records], dtype=float)
-        s_hat = elaz_to_vec(el, az)
-        beam = Beam.fit(s_hat, gain, degree=8, q=2, name="user_beam")
+        if isinstance(payload, dict) and "coeffs" in payload:
+            # Serialised tart-beam model produced by Beam.to_json()
+            beam = Beam.from_json(beam_path)
+        else:
+            # List of {el, az, gain} sample records: fit via tart-beam
+            beam = fit_from_json(beam_path, degree=8, q=2, ridge=0.0,
+                                 name="user_beam")
 
     logger.info("Beam: %s", beam)
 

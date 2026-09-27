@@ -1,6 +1,15 @@
 <!-- Copyright (c) 2025-2026 Timothy C.A. Molteno -->
 # Changelog
 
+## Unreleased
+
+- Incorporate beam models from the [tart-beam](https://github.com/tart-telescope/beams)
+  package as the single source of beam patterns (issue #7):
+  - `--beam` now also accepts a serialised tart-beam model JSON (the format
+    written by `tart_beam.Beam.to_json()`), loaded with `Beam.from_json()`.
+  - `{el, az, gain}` sample files are now fitted with
+    `tart_beam.fit_from_json()` instead of a hand-rolled fit.
+
 ## 0.3.3 — 2026-07-10
 
 - Multi-arch Docker images (amd64 + arm64) via native self-hosted ARM runner.

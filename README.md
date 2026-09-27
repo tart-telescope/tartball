@@ -37,7 +37,7 @@ tartball --model model.json --ms output.ms
 | `--res` | `2deg` | Healpix resolution (e.g. `1deg`, `2arcmin`) |
 | `--nside` | *auto* | Explicit healpix nside (overrides fov/res) |
 | `--noise` | `0.0` | Additive complex Gaussian noise amplitude |
-| `--beam` | *none* | Path to beam JSON file (el/az/gain records) |
+| `--beam` | *none* | `tart`, a tart-beam model JSON, or an el/az/gain sample JSON |
 | `--clobber` / `-c` | off | Overwrite existing output MS |
 | `--debug` | off | Enable debug logging |
 
@@ -75,7 +75,7 @@ The gains file should be a JSON object with `gain` and `phase_offset` arrays
 Apply a wide-angle antenna beam to the sky model.  The beam is evaluated at
 each healpix pixel and multiplied into the sky before computing visibilities.
 
-Two modes are supported:
+Three modes are supported:
 
 **Built-in TART beam** (`--beam tart` or `--beam default`):
 
@@ -86,6 +86,18 @@ harmonic series with a ``w**q`` horizon factor (q=1).
 
 ```bash
 tartball --model model.json --beam tart
+```
+
+**Beam model file** (`--beam path/to/beam_model.json`):
+
+Loads a serialised [tart-beam](https://github.com/tart-telescope/beams) beam
+model — a JSON object in the format written by `tart_beam.Beam.to_json()`
+(spherical-harmonic coefficients, horizon power and pointing).  Beam models
+fitted from measurements or simulations can therefore be built with the
+`tart-beam` package and incorporated directly.
+
+```bash
+tartball --model model.json --beam beam_model.json
 ```
 
 **Custom beam from file** (`--beam path/to/beam.json`):
